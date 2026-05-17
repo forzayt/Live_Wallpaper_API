@@ -22,7 +22,7 @@ function generateManifest() {
             .map(file => {
                 return {
                     name: file,
-                    url: `${repoBaseUrl}${file}`
+                    url: `${repoBaseUrl}${encodeURIComponent(file)}`
                 };
             });
 
