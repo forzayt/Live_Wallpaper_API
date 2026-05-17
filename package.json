@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "generate-manifest": "node scripts/generate-manifest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
