@@ -1,28 +1,27 @@
 {
-  "name": "fwallpaperdesktop",
+  "name": "live-wallpaper-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "API for Live Wallpapers",
   "scripts": {
-    "start": "electron .",
     "generate-manifest": "node scripts/generate-manifest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/forzayt/FwallpaperDesktop.git"
+    "url": "git+https://github.com/forzayt/Live_Wallpaper_API.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "live-wallpaper",
+    "api",
+    "wallpapers"
+  ],
+  "author": "forzayt",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/forzayt/FwallpaperDesktop/issues"
+    "url": "https://github.com/forzayt/Live_Wallpaper_API/issues"
   },
-  "homepage": "https://github.com/forzayt/FwallpaperDesktop#readme",
-  "devDependencies": {
-    "electron": "^42.1.0"
-  },
+  "homepage": "https://github.com/forzayt/Live_Wallpaper_API#readme",
   "dependencies": {
     "axios": "^1.16.1"
   }

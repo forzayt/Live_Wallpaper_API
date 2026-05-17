@@ -1,22 +1,22 @@
 {
-  "lastUpdated": "2026-05-17T10:10:49.780Z",
+  "lastUpdated": "2026-05-17T11:57:50.371Z",
   "count": 4,
   "wallpapers": [
     {
-      "name": "Cat_eats_chips_Windows_XP.mp4",
-      "url": "https://forzayt.github.io/FwallpaperDesktop/data/wallpapers/Cat_eats_chips_Windows_XP.mp4"
-    },
-    {
-      "name": "Minimalist Katana Sword in Ground Live Wallpaper.mp4",
-      "url": "https://forzayt.github.io/FwallpaperDesktop/data/wallpapers/Minimalist%20Katana%20Sword%20in%20Ground%20Live%20Wallpaper.mp4"
+      "name": "cat_eating_chips_on_broken_windows.mp4",
+      "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/cat_eating_chips_on_broken_windows.mp4"
     },
     {
       "name": "Spider-Noir Live Wallpaper.mp4",
-      "url": "https://forzayt.github.io/FwallpaperDesktop/data/wallpapers/Spider-Noir%20Live%20Wallpaper.mp4"
+      "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/Spider-Noir%20Live%20Wallpaper.mp4"
     },
     {
-      "name": "cat_eating_chips_on_broken_windows.mp4",
-      "url": "https://forzayt.github.io/FwallpaperDesktop/data/wallpapers/cat_eating_chips_on_broken_windows.mp4"
+      "name": "Minimalist Katana Sword in Ground Live Wallpaper.mp4",
+      "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/Minimalist%20Katana%20Sword%20in%20Ground%20Live%20Wallpaper.mp4"
+    },
+    {
+      "name": "Cat_eats_chips_Windows_XP.mp4",
+      "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/Cat_eats_chips_Windows_XP.mp4"
     }
   ]
 }

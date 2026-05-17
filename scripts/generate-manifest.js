@@ -3,7 +3,7 @@ const path = require('path');
 
 const wallpapersDir = path.join(__dirname, '../data/wallpapers');
 const manifestPath = path.join(__dirname, '../data/manifest/manifest.json');
-const repoBaseUrl = 'https://forzayt.github.io/FwallpaperDesktop/data/wallpapers/';
+const repoBaseUrl = 'https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/';
 
 function generateManifest() {
     try {
