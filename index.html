@@ -235,8 +235,8 @@ nav{
 }
 .action-dl{background:var(--neon-pink);color:#000;font-weight:700}
 .action-dl:hover{background:#fff}
-.action-copy-url{background:transparent;border:1px solid rgba(0,245,255,.3);color:var(--neon-blue)}
-.action-copy-url:hover{background:rgba(0,245,255,.08);border-color:var(--neon-blue)}
+.action-preview{background:transparent;border:1px solid rgba(0,245,255,.3);color:var(--neon-blue)}
+.action-preview:hover{background:rgba(0,245,255,.08);border-color:var(--neon-blue)}
 .action-mute{background:transparent;border:1px solid rgba(255,255,255,.1);color:#5a7494;padding:.4rem .6rem}
 .action-mute:hover{border-color:rgba(255,255,255,.3);color:#fff}
 
@@ -452,8 +452,8 @@ function renderCards(wallpapers){
         <div class="card-title">${title}</div>
         <div class="card-filename">${wp.name}</div>
         <div class="card-actions">
-          <a class="action-btn action-dl" href="${wp.url}" download="${wp.name}" target="_blank">↓ Download</a>
-          <button class="action-btn action-copy-url" onclick="copyUrl('${wp.url}',this)">⌘ Copy URL</button>
+          <button class="action-btn action-dl" onclick="downloadFile(event, '${wp.url}', '${wp.name}')">↓ Download</button>
+          <a class="action-btn action-preview" href="${wp.url}" target="_blank">👁 Preview</a>
           <button class="action-btn action-mute" id="mute-${i}" onclick="toggleMute(${i})">♪</button>
         </div>
       </div>
@@ -499,14 +499,31 @@ function toggleMute(i){
   btn.style.color=vid.muted?'':'var(--neon-green)';
 }
 
-/* ============ COPY URL ============ */
-function copyUrl(url,btn){
-  navigator.clipboard.writeText(url);
-  const orig=btn.textContent;
-  btn.textContent='✓ Copied!';
-  btn.style.borderColor='var(--neon-green)';
-  btn.style.color='var(--neon-green)';
-  setTimeout(()=>{btn.textContent=orig;btn.style.borderColor='';btn.style.color=''},2000);
+/* ============ DOWNLOAD ============ */
+ async function downloadFile(event, url, filename) {
+   const btn = event.currentTarget;
+  const orig = btn.textContent;
+  btn.textContent = '...';
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(blobUrl);
+    document.body.removeChild(a);
+    btn.textContent = '✓ Done';
+    setTimeout(() => btn.textContent = orig, 2000);
+  } catch (error) {
+    console.error('Download failed:', error);
+    window.open(url, '_blank');
+    btn.textContent = 'Error';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }
 }
 
 /* ============ FETCH + INIT ============ */
