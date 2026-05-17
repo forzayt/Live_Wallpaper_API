@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-05-17T12:14:26.661Z",
-  "count": 5,
+  "lastUpdated": "2026-05-17T13:10:21.026Z",
+  "count": 6,
   "wallpapers": [
     {
       "name": "cat_eating_chips_on_broken_windows.mp4",
@@ -21,6 +21,10 @@
     {
       "name": "Cat_eats_chips_Windows_XP.mp4",
       "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/Cat_eats_chips_Windows_XP.mp4"
+    },
+    {
+      "name": "Car - Supra Live Wallpaper.mp4",
+      "url": "https://forzayt.github.io/Live_Wallpaper_API/data/wallpapers/Car%20-%20Supra%20Live%20Wallpaper.mp4"
     }
   ]
 }
