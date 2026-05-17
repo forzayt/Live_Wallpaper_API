@@ -119,20 +119,6 @@ nav{
   width:4px;height:5px;background:var(--neon-pink);box-shadow:0 0 10px var(--neon-pink);
 }
 
-/* === FILTER ROW === */
-.filter-row{
-  display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap;
-}
-.filter-label{font-size:.6rem;letter-spacing:.2em;color:#3a5070;text-transform:uppercase}
-.filter-btn{
-  padding:.35rem .9rem;background:transparent;border:1px solid var(--grid);
-  color:#3a5070;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
-  cursor:pointer;transition:all .2s;
-  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
-}
-.filter-btn:hover,.filter-btn.active{border-color:var(--neon-blue);color:var(--neon-blue)}
-.filter-btn.active{background:rgba(0,245,255,.06)}
-
 /* === CARD GRID === */
 .catalog{
   display:grid;
@@ -329,14 +315,6 @@ footer a:hover{color:var(--neon-blue)}
 
   <div class="divider"></div>
 
-  <div class="filter-row">
-    <span class="filter-label">// filter</span>
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="cat">Cat</button>
-    <button class="filter-btn" data-filter="anime">Anime</button>
-    <button class="filter-btn" data-filter="minimal">Minimal</button>
-  </div>
-
   <div class="catalog" id="catalog">
     <div class="status-msg" id="catalog-status">
       <strong>LOADING</strong>Fetching wallpapers from API…
@@ -433,15 +411,6 @@ function slugify(name){
 function titleCase(str){
   return str.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');
 }
-function matchFilter(name,f){
-  if(f==='all')return true;
-  const n=name.toLowerCase();
-  if(f==='cat')return n.includes('cat');
-  if(f==='anime')return n.includes('noir')||n.includes('spider')||n.includes('anime');
-  if(f==='minimal')return n.includes('katana')||n.includes('minimal')||n.includes('sword');
-  return true;
-}
-
 /* ============ RENDER CARDS ============ */
 let allWallpapers=[];
 let muteState=true;
@@ -451,7 +420,7 @@ function renderCards(wallpapers){
   catalog.innerHTML='';
 
   if(!wallpapers.length){
-    catalog.innerHTML='<div class="status-msg"><strong>EMPTY</strong>No wallpapers match this filter.</div>';
+    catalog.innerHTML='<div class="status-msg"><strong>EMPTY</strong>No wallpapers found in the manifest.</div>';
     return;
   }
 
@@ -539,17 +508,6 @@ function copyUrl(url,btn){
   btn.style.color='var(--neon-green)';
   setTimeout(()=>{btn.textContent=orig;btn.style.borderColor='';btn.style.color=''},2000);
 }
-
-/* ============ FILTER ============ */
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const f=btn.dataset.filter;
-    const filtered=allWallpapers.filter(wp=>matchFilter(wp.name,f));
-    renderCards(filtered);
-  });
-});
 
 /* ============ FETCH + INIT ============ */
 const MANIFEST='https://forzayt.github.io/Live_Wallpaper_API/data/manifest/manifest.json';
