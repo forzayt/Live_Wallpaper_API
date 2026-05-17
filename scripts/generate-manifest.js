@@ -15,16 +15,20 @@ function generateManifest() {
         const files = fs.readdirSync(wallpapersDir);
         const wallpapers = files
             .filter(file => {
-                // Filter for video or image files if needed
                 const ext = path.extname(file).toLowerCase();
                 return ['.mp4', '.webm', '.jpg', '.jpeg', '.png', '.gif'].includes(ext);
             })
             .map(file => {
+                const filePath = path.join(wallpapersDir, file);
+                const stats = fs.statSync(filePath);
                 return {
                     name: file,
-                    url: `${repoBaseUrl}${encodeURIComponent(file)}`
+                    url: `${repoBaseUrl}${encodeURIComponent(file)}`,
+                    mtime: stats.mtimeMs // Store modification time for sorting
                 };
-            });
+            })
+            .sort((a, b) => b.mtime - a.mtime) // Sort by newest first
+            .map(({ name, url }) => ({ name, url })); // Remove mtime from final JSON to keep it clean
 
         const manifest = {
             lastUpdated: new Date().toISOString(),
