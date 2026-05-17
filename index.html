@@ -1,37 +1,305 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>Hello Electron!</title>
+    <title>Fwallpaper - Live Wallpaper Gallery</title>
     <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f0f2f5;
-      }
-      h1 {
-        color: #1a73e8;
-      }
-      p {
-        color: #5f6368;
-      }
+        :root {
+            --primary-color: #007bff;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .wallpaper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .card-preview {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .card-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover video {
+            opacity: 1;
+        }
+
+        .card-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: #7dd3fc;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Skeleton UI */
+        .skeleton {
+            background: linear-gradient(90deg, var(--card-bg) 25%, #2d3748 50%, var(--card-bg) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .skeleton-preview {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+        .skeleton-btn {
+            height: 35px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <p>We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.</p>
+</head>
+<body>
+    <header>
+        <h1>Fwallpaper Gallery</h1>
+        <p class="subtitle">Select a live wallpaper for your desktop</p>
+    </header>
+
+    <main id="app">
+        <div class="wallpaper-grid" id="grid">
+            <!-- Skeletons will be injected here -->
+        </div>
+    </main>
 
     <script>
-      document.getElementById('node-version').innerText = process.versions.node
-      document.getElementById('chrome-version').innerText = process.versions.chrome
-      document.getElementById('electron-version').innerText = process.versions.electron
+        const MANIFEST_URL = 'https://forzayt.github.io/FwallpaperDesktop/data/manifest/manifest.json';
+        const grid = document.getElementById('grid');
+
+        async function fetchWallpapers() {
+            try {
+                // Initial skeletons
+                grid.innerHTML = Array(6).fill(0).map(() => `
+                    <div class="card">
+                        <div class="skeleton skeleton-preview"></div>
+                        <div class="card-info">
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="card-actions">
+                                <div class="skeleton skeleton-btn"></div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const response = await fetch(MANIFEST_URL);
+                const data = await response.json();
+                renderWallpapers(data.wallpapers);
+            } catch (error) {
+                console.error('Error fetching wallpapers:', error);
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #ef4444;">Failed to load wallpapers. Please check your connection.</div>`;
+            }
+        }
+
+        async function renderWallpapers(wallpapers) {
+            grid.innerHTML = '';
+            
+            // Create placeholders for all wallpapers
+            const placeholders = wallpapers.map((wp, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.id = `wp-card-${index}`;
+                card.innerHTML = `
+                    <div class="skeleton skeleton-preview"></div>
+                    <div class="card-info">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="card-actions">
+                            <div class="skeleton skeleton-btn"></div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+                return { card, wp };
+            });
+
+            // Load sequentially
+            for (const item of placeholders) {
+                await loadWallpaper(item.card, item.wp);
+            }
+        }
+
+        function loadWallpaper(card, wp) {
+            return new Promise((resolve) => {
+                const title = wp.name.replace(/\.[^/.]+$/, "").replace(/_/g, ' ');
+                
+                // Preload video metadata
+                const video = document.createElement('video');
+                video.muted = true;
+                video.loop = true;
+                video.preload = 'metadata';
+                
+                const source = document.createElement('source');
+                source.src = wp.url;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+
+                video.onloadedmetadata = () => {
+                    card.innerHTML = `
+                        <div class="card-preview">
+                            <video loop muted onmouseover="this.play()" onmouseout="this.pause(); this.currentTime = 0;">
+                                <source src="${wp.url}" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-title" title="${title}">${title}</div>
+                            <div class="card-actions">
+                                <button class="btn btn-primary" onclick="setWallpaper('${wp.url}')">Set Wallpaper</button>
+                            </div>
+                        </div>
+                    `;
+                    // Small delay to make the transition feel smoother
+                    setTimeout(resolve, 100);
+                };
+
+                video.onerror = () => {
+                    console.error('Error loading video:', wp.url);
+                    card.innerHTML = `<div style="padding: 20px; text-align: center; color: #ef4444;">Error loading ${title}</div>`;
+                    resolve();
+                };
+
+                // Start loading
+                video.load();
+            });
+        }
+
+        function setWallpaper(url) {
+            alert('Setting wallpaper: ' + url + '\n(Logic to be implemented in main process)');
+            // Here you would send an IPC message to the main process to actually change the wallpaper
+        }
+
+        fetchWallpapers();
     </script>
-  </body>
+</body>
 </html>
